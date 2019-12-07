@@ -16,12 +16,15 @@ def send_msg(event):
     global entry
     client_sock.send(entry.get().encode())
 
+def terminate_chatbox(event):
+    chat.destroy()
+
 try:
     client_sock = socket(AF_INET, SOCK_STREAM) 
     client_sock.connect(('127.0.0.1', 8080))
 
     chat = Tk()
-    chat.title('채팅')
+    chat.title('Chatbox_NetworkProject')
     chat.geometry('390x510+500-100')
     chat.resizable(1,1)
         
@@ -31,7 +34,7 @@ try:
     frame=Frame(chat)
     frame.pack()
 
-    mes = Label(frame,text="메세지")
+    mes = Label(frame,text="Message")
     mes.pack(side='left')
     entry = Entry(frame, width = 40)
     entry.pack(side='left')
@@ -42,9 +45,16 @@ try:
 
     #send button
     #<Button-1> is left mouse click.   
-    button = Button(frame,text ='보내기')
+    button = Button(frame,text ='Send')
     button.pack()
     button.bind('<Button-1>',send_msg)
+
+    exit_frame=Frame(chat)
+    exit_frame.pack()
+
+    button = Button(exit_frame,text ='Exit')
+    button.pack()
+    button.bind('<Button-1>',terminate_chatbox)
     #repeat until exit
     chat.mainloop()    
 
