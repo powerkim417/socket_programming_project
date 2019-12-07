@@ -1,36 +1,54 @@
 from socket import *
 from threading import Thread
+from tkinter import *
 
 def recv_msg(client_sock):
+    global text
     while True:
         data = client_sock.recv(1024)
         if not data:
             break
-        print(data.decode())
+        text.insert('insert',data.decode())
+        text.insert('insert','\n')
 
-def client_main():
-    try:
+def send_msg(event):
+    global client_sock
+    global entry
+    client_sock.send(entry.get().encode())
 
-        client_sock = socket(AF_INET, SOCK_STREAM) 
-        client_sock.connect(('127.0.0.1', 8080))
-        thd = Thread(target=recv_msg, args=(client_sock, ))
-        thd.daemon = True
-        thd.start()
+try:
+    client_sock = socket(AF_INET, SOCK_STREAM) 
+    client_sock.connect(('127.0.0.1', 8080))
+
+    chat = Tk()
+    chat.title('채팅')
+    chat.geometry('390x510+500-100')
+    chat.resizable(1,1)
         
-        # while msg is not exit
-        # send msg to server
-        # print echoed msg
-        while True: 
+    text=Text(chat)
+    text.pack()
 
-            msg = input()
-            client_sock.send(msg.encode()) 
-            if msg == 'exit':
-                break
+    frame=Frame(chat)
+    frame.pack()
 
-        client_sock.close() 
+    mes = Label(frame,text="메세지")
+    mes.pack(side='left')
+    entry = Entry(frame, width = 40)
+    entry.pack(side='left')
 
-    except ConnectionRefusedError:
+    thd = Thread(target=recv_msg, args=(client_sock,))
+    thd.daemon = True
+    thd.start()
 
-        print('*** Server is not ON, Try again. ***')
+    #send button
+    #<Button-1> is left mouse click.   
+    button = Button(frame,text ='보내기')
+    button.pack()
+    button.bind('<Button-1>',send_msg)
+    #repeat until exit
+    chat.mainloop()    
 
-client_main()
+    client_sock.close() 
+
+except ConnectionRefusedError:
+    print('*** Server is not ON, Try again. ***')
