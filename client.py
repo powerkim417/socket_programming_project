@@ -69,3 +69,6 @@ try:
 
 except ConnectionRefusedError:
     print('*** Server is not ON, Try again. ***')
+
+except TimeoutError:
+    print('*** Timeout Error, Try again. ***')
