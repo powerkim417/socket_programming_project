@@ -31,17 +31,18 @@ class Manager:
             self.remove_user(addr)
             return -1
         else:
-            self.broadcast_except_me(addr, '[{}:{}] {}'.format(addr[0], addr[1], msg))
+            # self.broadcast_except_me(addr, '[{}:{}] {}'.format(addr[0], addr[1], msg))
+            self.broadcast(msg)
             print('[{}:{}] {}'.format(addr[0], addr[1], msg))
 
     def broadcast(self, data): # to all clients
         for conn in self.userlist.values():
             conn.send(data.encode())
 
-    def broadcast_except_me(self, c_addr, data): # to all clients except the sender
-        for addr in self.userlist:
-            if addr == c_addr: continue
-            self.userlist[addr].send(data.encode())
+    # def broadcast_except_me(self, c_addr, data): # to all clients except the sender
+    #     for addr in self.userlist:
+    #         if addr == c_addr: continue
+    #         self.userlist[addr].send(data.encode())
 
 mng = Manager()
 
@@ -60,8 +61,8 @@ def threaded(client_sock, addr):
                 client_sock.close()
                 break
 
-    except ConnectionResetError:
-        print('*** [{}:{}] ConnectionResetError ***'.format(addr[0], addr[1])) 
+    except ConnectionResetError: # Exit
+        print('*** [{}:{}] Exit ***'.format(addr[0], addr[1])) 
 
     mng.remove_user(addr)
              
