@@ -20,8 +20,9 @@ def terminate_chatbox(event):
     chat.destroy()
 
 try:
+    host_ip = input('Server IP: ')
     client_sock = socket(AF_INET, SOCK_STREAM) 
-    client_sock.connect(('127.0.0.1', 8080))
+    client_sock.connect((host_ip, 8080))
 
     chat = Tk()
     chat.title('Chatbox_NetworkProject')
