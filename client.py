@@ -1,15 +1,19 @@
 from socket import *
 from threading import Thread
 from tkinter import *
+from tkinter import messagebox
 
 def recv_msg(client_sock):
     global text
     while True:
-        data = client_sock.recv(1024)
-        if not data:
-            break
-        text.insert('insert',data.decode())
-        text.insert('insert','\n')
+        try:
+            data = client_sock.recv(1024)
+            if not data:
+                break
+            text.insert('insert',data.decode())
+            text.insert('insert','\n')
+        except:
+            messagebox.showinfo("Chatbox_NetworkProject", "Connection lost by remote server.")
 
 def send_msg(event):
     global client_sock
