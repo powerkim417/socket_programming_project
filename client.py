@@ -17,8 +17,9 @@ def recv_msg(client_sock):
 
 def send_msg(event):
     global client_sock
-    global entry
+    global entry # chat input
     client_sock.send(entry.get().encode())
+    entry.delete(0, 'end')
 
 def terminate_chatbox(event):
     chat.destroy()

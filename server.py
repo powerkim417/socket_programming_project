@@ -31,18 +31,17 @@ class Manager:
             self.remove_user(addr)
             return -1
         else:
-            # self.broadcast_except_me(addr, '[{}:{}] {}'.format(addr[0], addr[1], msg))
-            self.broadcast(msg)
+            self.broadcast_msg(addr, msg)
             print('[{}:{}] {}'.format(addr[0], addr[1], msg))
 
     def broadcast(self, data): # to all clients
         for conn in self.userlist.values():
             conn.send(data.encode())
 
-    # def broadcast_except_me(self, c_addr, data): # to all clients except the sender
-    #     for addr in self.userlist:
-    #         if addr == c_addr: continue
-    #         self.userlist[addr].send(data.encode())
+    def broadcast_msg(self, sender_addr, msg): # to all clients, but to sender: [You] asdfasdf
+        for addr in self.userlist:
+            if addr == sender_addr: self.userlist[addr].send('[You] {}'.format(msg).encode()) # if my msg
+            else: self.userlist[addr].send('[{}:{}] {}'.format(sender_addr[0], sender_addr[1], msg).encode())
 
 mng = Manager()
 
