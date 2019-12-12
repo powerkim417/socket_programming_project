@@ -26,13 +26,17 @@ class Manager:
         self.broadcast('*** [{}:{}] left. ***'.format(addr[0], addr[1]))
         print('*** Currently {} User(s) Online ***'.format(len(self.userlist)))
 
+    # def msg_handle(self, addr, msg):
+    #     if (msg.strip() == 'exit'):
+    #         self.remove_user(addr)
+    #         return -1
+    #     else:
+    #         self.broadcast_msg(addr, msg)
+    #         print('[{}:{}] {}'.format(addr[0], addr[1], msg))
+    
     def msg_handle(self, addr, msg):
-        if (msg.strip() == 'exit'):
-            self.remove_user(addr)
-            return -1
-        else:
-            self.broadcast_msg(addr, msg)
-            print('[{}:{}] {}'.format(addr[0], addr[1], msg))
+        self.broadcast_msg(addr, msg)
+        print('[{}:{}] {}'.format(addr[0], addr[1], msg))
 
     def broadcast(self, data): # to all clients
         for conn in self.userlist.values():
