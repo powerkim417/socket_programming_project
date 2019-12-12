@@ -76,13 +76,16 @@ def server_main():
         # Object initialization
         server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
         server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
+        host_port = 8080
+        
         # Bind
-        server_sock.bind(('', 8080)) 
+        server_sock.bind(('', host_port)) 
 
         # Listen
-        server_sock.listen(1) 
-        print('*** Server ON ***')
+        server_sock.listen(1)
+        host_ip = socket.gethostbyname(socket.gethostname() ) 
+
+        print('*** [{}:{}] Server ON ***'.format(host_ip, host_port))
 
         # If new client connects, return new socket(for client) in accept()
         while True:

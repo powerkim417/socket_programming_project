@@ -72,3 +72,6 @@ except ConnectionRefusedError:
 
 except TimeoutError:
     print('*** Timeout Error, Try again. ***')
+
+except gaierror:
+    print('*** Wrong IP address, Try again. ***')
