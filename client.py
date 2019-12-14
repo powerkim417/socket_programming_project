@@ -14,6 +14,7 @@ def recv_msg(client_sock):
             text.insert('insert','\n')
         except:
             messagebox.showinfo("Chatbox_NetworkProject", "Connection lost by remote server.")
+            chat.destroy()
             break
 
 def send_msg(event):
